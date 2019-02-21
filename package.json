@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "fix": "prettier --config './prettier.config.js' --ignore-path './.prettierignore'  --write './src/**/*.{ts,tsx,vue}'",
+    "fix": "prettier --config './prettier.config.js' --ignore-path './.prettierignore'  --write './src/**/*.{ts,vue}'",
     "tslint-check": "tslint-config-prettier-check ./tslint.json"
   },
   "dependencies": {
@@ -19,11 +19,22 @@
     "@vue/cli-plugin-babel": "^3.4.0",
     "@vue/cli-plugin-typescript": "^3.4.0",
     "@vue/cli-service": "^3.4.0",
+    "lint-staged": "^8.1.4",
     "node-sass": "^4.9.0",
     "prettier": "^1.16.4",
     "sass-loader": "^7.1.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.0.0",
     "vue-template-compiler": "^2.5.21"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{tsx,vue}": [
+      "npm run lint",
+      "npm run fix",
+      "git add"
+    ]
   }
 }
