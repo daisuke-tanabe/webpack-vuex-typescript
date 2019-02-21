@@ -1,0 +1,17 @@
+# Browsers that we support
+
+# Google
+# chromeはクローラーの仕様に合わせること
+chrome <= 41
+last 2 and_chr versions
+
+# Apple
+last 3 safari versions
+ios_saf >= 10
+
+# Microsoft
+last 2 edge versions
+ie >= 11
+
+# Mozilla
+last 2 ff versions
