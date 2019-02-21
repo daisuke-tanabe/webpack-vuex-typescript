@@ -7,7 +7,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "fix": "prettier --config './prettier.config.js' --ignore-path './.prettierignore'  --write './src/**/*.{ts,vue}'",
-    "tslint-check": "tslint-config-prettier-check ./tslint.json"
+    "tslint-check": "tslint-config-prettier-check ./tslint.json",
+    "type-check": "tsc --noImplicitAny"
   },
   "dependencies": {
     "vue": "^2.6.6",
@@ -31,7 +32,7 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*.{tsx,vue}": [
+    "*.{ts,vue}": [
       "npm run lint",
       "npm run fix",
       "git add"

@@ -4,6 +4,10 @@ import store from './store';
 
 Vue.config.productionTip = false;
 
+const c = (a, b) => {
+  return a + b;
+};
+
 new Vue({
   store,
   render: (h) => h(App),

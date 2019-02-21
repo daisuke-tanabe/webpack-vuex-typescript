@@ -1,14 +1,45 @@
 # webpack-vuex-typescript
 
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints files
+```
+npm run lint
+```
+
+### Formats files
+```
+npm run fix
+```
+
+### Type check files
+```
+npm run type-check
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
+
 ## Node.js
 
 理由がない限りはLTS版を指定してください。
 
 [Node.js日本語サイト](https://nodejs.org/ja/)
 
-## Rules
-
-### Format of the commit message
+## Format of the commit message
 
 `<scope>`、`#<issue>`、`<boddy>` は不要であれば省略可能とする。
 
@@ -55,33 +86,10 @@ docs: updated README.md
 ステージング環境が更新されたので更新した
 ```
 
-## Project setup
-```
-npm install
-```
+## Loose typescript
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+コンパイル時には暗黙のanyを許可し、`npm run type-check` で厳密に型を確認する。
+構文とフォーマットは修正し、`type-check` はエラーが出力されても許容する。
 
 ## node_modules
 
