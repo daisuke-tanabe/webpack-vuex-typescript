@@ -55,7 +55,6 @@ docs: updated README.md
 ステージング環境が更新されたので更新した
 ```
 
-
 ## Project setup
 ```
 npm install
@@ -83,3 +82,9 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## node_modules
+
+### tslint-config-prettier
+prettierと競合するルールを無効化する。
+https://github.com/prettier/tslint-config-prettier

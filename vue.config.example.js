@@ -1,6 +1,8 @@
+// portは各自変更してください
+const port = 8080;
+
 module.exports = {
   devServer: {
-    // portは各自変更してください
-    port: 8080,
-  },
+    port,
+  }
 };
