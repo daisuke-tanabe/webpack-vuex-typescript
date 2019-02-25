@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "strict": true,
-    "noImplicitAny": false,
     "allowJs": true,
     "noEmit": true,
     "checkJs": true,
