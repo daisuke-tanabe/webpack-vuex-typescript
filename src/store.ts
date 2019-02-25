@@ -3,24 +3,66 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
+const REG_EXP = /[÷×＋−]/;
+
+const canUpdateNumber = (state: { previous: string; isSelectedOperator: boolean }, current: string): boolean => {
+  const { previous, isSelectedOperator } = state;
+  const hasZeroOrDot = current === '0' || current === '00' || current === '.';
+
+  // 直前に入力された文字が空文字で、0かドットを入力した場合、何も起こさない
+  // 直前に入力された文字がドットで、ドットを入力した場合、何も起こさない
+  // 直前に入力された文字が等号で、ドットか0を入力した場合、何も起こさない
+  // 演算子入力状態で、0かドットを入力した場合、何も起こさない
+  return (
+    (previous === '' && hasZeroOrDot) ||
+    (previous === '.' && current === '.') ||
+    (previous === '＝' && hasZeroOrDot) ||
+    (isSelectedOperator && hasZeroOrDot)
+  );
+};
+
+const canUpdateOperator = (state: { previous: string }, current: string): boolean => {
+  const { previous } = state;
+  const hasArithmetic = REG_EXP.test(current);
+
+  // 直前に入力された文字が空文字で、四則演算が入力されている場合、何も起こさない
+  // 直前に入力された文字がドットで、四則演算が入力されている場合、何も起こさない
+  // 直前に入力された文字が等号で、四則演算が入力されている場合、何も起こさない
+  return (
+    (previous === '' && hasArithmetic) || (previous === '.' && hasArithmetic) || (previous === '＝' && hasArithmetic)
+  );
+};
+
+const canUpdateAnswer = (
+  state: { previous: string; isSelectedOperator: boolean; formula: string[] },
+  current: string,
+): boolean => {
+  const { previous, isSelectedOperator, formula } = state;
+  const hasEqual = current === '＝';
+
+  // 直前に入力された文字がドットで、等号を入力した場合、何も起こさない
+  // 直前に入力された文字が等号で、等号を入力した場合、何も起こさない
+  // 直前の文字が空文字の場合、何も起こさない
+  // 演算子入力状態の場合、何も起こさない
+  // 四則演算が1つも式にない場合、何も起こさない
+  return (
+    previous === '' ||
+    (previous === '.' && hasEqual) ||
+    (previous === '＝' && hasEqual) ||
+    isSelectedOperator ||
+    !formula.some((_formula) => REG_EXP.test(_formula))
+  );
+};
+
 export default new Vuex.Store({
   state: {
-    numbers: ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '00', '.'],
-    operators: ['÷', '×', '＋', '−', '＝'],
-    current: '',
+    previous: '',
     formula: [],
     answer: 0,
-    // 演算子が選択されてるか否か
     isSelectedOperator: false,
   },
 
   getters: {
-    numbers(state): string[] {
-      return state.numbers;
-    },
-    operators(state): string[] {
-      return state.operators;
-    },
     formula(state): string[] {
       return state.formula;
     },
@@ -28,10 +70,12 @@ export default new Vuex.Store({
       return state.answer;
     },
   },
+
   mutations: {
-    setNumber(state, payload): void {
+    updateNumber(state, payload): void {
       // 直前の文字が等号の場合はformulaを空にする
-      if (state.current === '＝') {
+      // 計算が終わってから次の数値入力時に数式と答えをリセットする仕様
+      if (state.previous === '＝') {
         state.formula = [];
         state.answer = 0;
       }
@@ -43,22 +87,20 @@ export default new Vuex.Store({
       state.isSelectedOperator = false;
     },
 
-    setOperator(state, payload): void {
+    updateOperator(state, payload): void {
       const { text }: { text: string } = payload;
       const formula: string[] = state.formula;
 
-      // 演算子入力状態で再度演算子が入力されたら末尾演算子を更新する
+      // 演算子入力状態で再度演算子が入力されたら配列末尾を削除する
       if (state.isSelectedOperator) {
         state.formula.pop();
-        formula.push(`_${text}_`);
-        return;
       }
 
-      formula.push(text);
+      formula.push(`_${text}_`);
       state.isSelectedOperator = true;
     },
 
-    setAnswer(state): void {
+    updateAnswer(state): void {
       const answer = state.formula
         .join('')
         .replace(/_/g, '')
@@ -71,95 +113,45 @@ export default new Vuex.Store({
     },
 
     clearSelectedNumbers(state): void {
-      state.current = '';
+      state.previous = '';
       state.formula = [];
       state.answer = 0;
       state.isSelectedOperator = false;
     },
 
-    setCurrent(state, payload): void {
+    updateCurrent(state, payload): void {
       const { text }: { text: string } = payload;
-      state.current = text;
+      state.previous = text;
     },
   },
 
   actions: {
-    clickNumber({ commit, state }, text): void {
-      // 直前に入力された文字が空文字で、0かドットを入力した場合何も起こさない
-      if (state.current === '' && (text === '0' || text === '00' || text === '.')) {
+    clickNumber({ commit, state }, current): void {
+      if (canUpdateNumber(state, current)) {
         return;
       }
 
-      // 直前に入力された文字がドットで、ドットを入力した場合何も起こさない
-      if (state.current === '.' && text === '.') {
-        return;
-      }
-
-      // 直前に入力された文字が等号で、ドットか0を入力した場合何も起こさない
-      if (state.current === '＝' && (text === '.' || text === '0' || text === '00')) {
-        return;
-      }
-
-      // 演算子入力状態で、0かドットを入力した場合何も起こさない
-      if (state.isSelectedOperator && (text === '0' || text === '00' || text === '.')) {
-        return;
-      }
-
-      commit('setNumber', { text });
-      commit('setCurrent', { text });
+      commit('updateNumber', { text: current });
+      commit('updateCurrent', { text: current });
     },
 
-    clickOperator({ commit, state }, text): void {
-      const hasArithmetic = /[÷×＋−]/g.test(text);
-
-      // 直前に入力された文字が空文字で、四則演算が入力されている場合、何も起こさない
-      if (state.current === '' && hasArithmetic) {
+    clickOperator({ commit, state }, current): void {
+      if (canUpdateOperator(state, current)) {
         return;
       }
 
-      // 直前に入力された文字がドットで、四則演算が入力されている場合、何も起こさない
-      if (state.current === '.' && hasArithmetic) {
-        return;
-      }
-
-      // 直前に入力された文字が等号で、四則演算が入力されている場合、何も起こさない
-      if (state.current === '＝' && hasArithmetic) {
-        return;
-      }
-
-      commit('setOperator', { text });
-      commit('setCurrent', { text });
+      commit('updateOperator', { text: current });
+      commit('updateCurrent', { text: current });
     },
 
-    clickAnswer({ commit, state }, text): void {
-      // 直前に入力された文字がドットで、等号を入力した場合何も起こさない
-      if (state.current === '.' && text === '＝') {
+    clickAnswer({ commit, state }, current): void {
+      if (canUpdateAnswer(state, current)) {
         return;
       }
 
-      // 直前に入力された文字が等号で、等号を入力した場合何も起こさない
-      if (state.current === '＝' && text === '＝') {
-        return;
-      }
-
-      // 直前の文字が空文字の場合何も起こさない
-      if (state.current === '') {
-        return;
-      }
-
-      // 直前に四則演算が選択されている場合何も起こさない
-      if (state.isSelectedOperator) {
-        return;
-      }
-
-      // 四則演算が1つも式にない場合何も起こさない
-      if (!state.formula.some((formula) => /[÷×＋−]/g.test(formula))) {
-        return;
-      }
-
-      commit('setAnswer');
-      commit('setOperator', { text });
-      commit('setCurrent', { text });
+      commit('updateAnswer');
+      commit('updateOperator', { text: current });
+      commit('updateCurrent', { text: current });
     },
 
     clickClear({ commit }): void {

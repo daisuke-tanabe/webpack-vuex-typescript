@@ -5,84 +5,65 @@
       <div class="result__answer">{{ answer }}</div>
     </div>
     <div class="clear">
-      <button class="button" type="button" @click="handleClickClear">Clear</button>
+      <Button text="Clear" @click="handleClickClear" />
     </div>
-    <ol class="numbers">
-      <li class="numbers__item" v-for="number in numbers">
-        <button class="button" type="button" @click="handleClickNumber">{{ number }}</button>
-      </li>
-    </ol>
-    <ul class="operators">
-      <li class="operators__item" v-for="operator in operators">
-        <button v-if="operator === '＝'" class="button" type="button" @click="handleClickAnswer">{{ operator }}</button>
-        <button v-else class="button" type="button" @click="handleClickOperator">{{ operator }}</button>
-      </li>
-    </ul>
+    <NumberBoard :numbers="numbers" />
+    <OperatorBoard :operators="operators" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
+import Button from '../atoms/Button/index.vue';
+import NumberBoard from '../molecules/NumberBoard/index.vue';
+import OperatorBoard from '../molecules/OperatorBoard/index.vue';
 
-//
-@Component
-export default class Button extends Vue {
-  // computed
-  get numbers(): string[] {
-    return this.$store.getters.numbers;
-  }
-  get operators(): string[] {
-    return this.$store.getters.operators;
-  }
+@Component({
+  components: {
+    Button,
+    NumberBoard,
+    OperatorBoard,
+  },
+})
+export default class Calculator extends Vue {
+  private numbers: string[] = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '00', '.'];
+  private operators: string[] = ['÷', '×', '＋', '−', '＝'];
+
   get formula(): string {
     return this.$store.getters.formula.length !== 0 ? this.$store.getters.formula.join('').replace(/_/g, ' ') : null;
   }
+
   get answer(): number {
     return this.$store.getters.answer;
   }
 
-  // methods
-  public handleClickNumber(event: Event): void {
-    if (event.target instanceof HTMLElement) {
-      this.$store.dispatch('clickNumber', event.target.innerText);
-    }
-  }
   public handleClickClear(): void {
     this.$store.dispatch('clickClear');
-  }
-  public handleClickOperator(event: Event): void {
-    if (event.target instanceof HTMLElement) {
-      this.$store.dispatch('clickOperator', event.target.innerText);
-    }
-  }
-  public handleClickAnswer(event: Event): void {
-    if (event.target instanceof HTMLElement) {
-      this.$store.dispatch('clickAnswer', event.target.innerText);
-    }
   }
 }
 </script>
 
 <style scoped lang="scss">
 .calculator {
-  border: 1px solid #ccc;
+  border: 1px solid #dedede;
   display: grid;
   grid-template-columns: 80% 20%;
   grid-template-rows: 15% 85%;
   grid-template-areas:
     'result clear'
-    'numbers operators';
-  height: 420px;
+    'number-board operator-board';
+  height: 460px;
+  margin: 20px;
   width: 420px;
 }
 
 .result {
   grid-area: result;
-  border: 1px solid #ccc;
+  border: 1px solid #dedede;
   display: grid;
-  grid-template-rows: 40% 60%;
+  grid-template-rows: 30% 70%;
   text-align: right;
-  padding-right: 15%;
+  padding-right: 11%;
 }
 
 .result__formula {
@@ -98,31 +79,5 @@ export default class Button extends Vue {
 
 .clear {
   grid-area: clear;
-}
-
-.numbers {
-  grid-area: numbers;
-  display: grid;
-  grid-template-columns: 33.33% 33.33% 33.33%;
-  grid-template-rows: 25% 25% 25% 25%;
-}
-
-.operators {
-  grid-area: operators;
-  display: grid;
-  grid-template-rows: 20% 20% 20% 20% 20%;
-}
-
-.button {
-  align-items: center;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  color: #333;
-  display: flex;
-  font-size: 18px;
-  height: 100%;
-  justify-content: center;
-  text-decoration: none;
-  width: 100%;
 }
 </style>
