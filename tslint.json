@@ -6,6 +6,7 @@
   ],
   "linterOptions": {
     "exclude": [
+      ".storybook/**",
       "node_modules/**"
     ]
   },

@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "storybook": "start-storybook -p 9001 -c .storybook",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "fix": "prettier --config './prettier.config.js' --ignore-path './.prettierignore'  --write './src/**/*.{ts,vue}'",
+    "storybook:build": "vue-cli-service storybook:build",
+    "storybook:serve": "vue-cli-service storybook:serve -p 6006",
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "type-check": "tsc"
   },
@@ -18,7 +19,10 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@storybook/vue": "^4.1.13",
+    "@storybook/addon-actions": "^4.1.0",
+    "@storybook/addon-knobs": "^4.1.0",
+    "@types/storybook__addon-actions": "^3.4.2",
+    "@types/storybook__vue": "^3.3.2",
     "@vue/cli-plugin-babel": "^3.4.0",
     "@vue/cli-plugin-typescript": "^3.4.0",
     "@vue/cli-service": "^3.4.0",
@@ -26,8 +30,10 @@
     "node-sass": "^4.9.0",
     "prettier": "^1.16.4",
     "sass-loader": "^7.1.0",
+    "storybook-addon-vue-info": "^1.0.0-beta.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.0.0",
+    "vue-cli-plugin-storybook": "^0.5.2",
     "vue-template-compiler": "^2.5.21"
   },
   "gitHooks": {

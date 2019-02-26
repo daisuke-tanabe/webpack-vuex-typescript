@@ -1,7 +1,7 @@
 <template>
   <ul class="number-board">
     <li class="number-board__item" v-for="number in numbers">
-      <Button :text="number" @click="handleClickNumber" />
+      <Button :label="number" @click="handleClickNumber" />
     </li>
   </ul>
 </template>

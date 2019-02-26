@@ -1,5 +1,5 @@
 <template>
-  <button class="button" :type="type" :style="styles" @click="handleClick">{{ text }}</button>
+  <button class="button" :type="type" :style="styles" @click="handleClick">{{ label }}</button>
 </template>
 
 <script lang="ts">
@@ -11,7 +11,7 @@ export default class Button extends Vue {
     type: String,
     default: '',
   })
-  public text!: string;
+  public label!: string;
 
   @Prop({
     type: String,

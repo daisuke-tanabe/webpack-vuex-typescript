@@ -29,8 +29,8 @@
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue"
+    "src/**/*.vue",
+    "node_modules/@types/webpack-env/index.d.ts"
   ],
   "exclude": [
     "node_modules"

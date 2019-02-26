@@ -1,8 +1,8 @@
 <template>
   <ul class="operator-board">
     <li class="operator-board__item" v-for="operator in operators">
-      <Button v-if="operator === '＝'" :text="operator" skin="pink" @click="handleClickAnswer" />
-      <Button v-else :text="operator" @click="handleClickOperator" />
+      <Button v-if="operator === '＝'" :label="operator" skin="pink" @click="handleClickAnswer" />
+      <Button v-else :label="operator" @click="handleClickOperator" />
     </li>
   </ul>
 </template>
