@@ -9,7 +9,7 @@
     "lint": "vue-cli-service lint",
     "fix": "prettier --config './prettier.config.js' --ignore-path './.prettierignore'  --write './src/**/*.{ts,vue}'",
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
-    "type-check": "tsc --noImplicitAny"
+    "type-check": "tsc"
   },
   "dependencies": {
     "vue": "^2.6.6",
