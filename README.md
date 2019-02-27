@@ -1,6 +1,9 @@
 # webpack-vuex-typescript
 
 ## Project setup
+
+`vue.config.example.js` をコピーしたら `vue.config.js` にリネームする(ポートは各自変更)
+
 ```
 npm install
 ```
