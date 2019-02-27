@@ -3,67 +3,86 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Emit, Vue } from 'vue-property-decorator';
+
+interface Map {
+  [key: string]: string;
+}
+
+interface SkinProp<M> {
+  [key: string]: M;
+}
+
+const skinProp: SkinProp<Map> = {
+  '': {
+    color: '#333',
+    'background-color': '#fff',
+  },
+  pink: {
+    color: '#fff',
+    'background-color': '#dd0d4d',
+  },
+};
 
 @Component
 export default class Button extends Vue {
-  // @Propsの中身はvueの世界線
-  // @Propsの下はdataを表していて、typescriptの世界線
+  /**
+   * @で始まる記述について
+   * https://github.com/kaorun343/vue-property-decorator
+   * ---
+   * @Prop({ ... })
+   * public hoge!: string;
+   * ---
+   *
+   * vueのpropsと同じオブジェクトを中に書く
+   * ---
+   * @Prop({ ... })
+   * ---
+   *
+   * vueのdataと同様
+   * 「hoge」後ろのエクスクラメーションマーク（びっくりマーク）は必ず値が入ることを保証し、constructorでの初期化を省く
+   * 基本的に@Propsの中でdefaultが定義されているプロパティには書く
+   * 他には意図しないプロパティがライブラリから提供される場合に利用する
+   * ---
+   * public hoge!: string;
+   * ---
+   */
+
   @Prop({
     type: String,
     default: '',
   })
-  public label!: string;
+  private label?: string;
 
   @Prop({
     type: String,
     default: 'button',
   })
-  public type?: string;
+  private type!: string;
 
   @Prop({
     type: String,
     default: '',
   })
-  public skin?: string;
+  private skin!: string;
 
   // computed
-  // TODO styled-componentsようにしたかったけど、vueはclassとstyleに寄せたほうが可読性良いかも
-  get styles(): { [key: string]: string } | void {
-    const color = (): string => {
-      if (this.skin === 'pink') {
-        return '#fff';
-      }
-
-      return '#333';
+  get styles() {
+    return {
+      '--color': skinProp[this.skin].color,
+      '--background-color': skinProp[this.skin]['background-color'],
     };
-
-    const backgroundColor = (): string => {
-      if (this.skin === 'pink') {
-        return '#dd0d4d';
-      }
-
-      return '#fff';
-    };
-
-    if (this.skin === 'pink') {
-      return {
-        '--color': color(),
-        '--background-color': backgroundColor(),
-      };
-    }
   }
 
-  // methods
-  public handleClick(event: Event): void {
-    if (event.target instanceof HTMLElement) {
-      this.$emit('click', event);
-    }
+  @Emit('click')
+  private handleClick(event: Event): Event {
+    return event;
   }
 }
 </script>
 
 <style scoped lang="scss">
+// スタイルが必要とする変数はscriptに書いた
 .button {
   align-items: center;
   background-color: var(--background-color);

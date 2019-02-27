@@ -19,7 +19,7 @@ storiesOf('Button', module)
     'button type',
     () => ({
       components: { Button },
-      template: '<Button label="Button" @click="action">',
+      template: '<Button label="Button" @click="action" />',
       methods: { action: action('click') },
       propsDescription,
     }),
@@ -29,14 +29,14 @@ storiesOf('Button', module)
     'submit type',
     () => ({
       components: { Button },
-      template: '<Button label="Button" type="submit" @click="action">',
+      template: '<Button label="Button" type="submit" @click="action" />',
       methods: { action: action('click') },
       propsDescription,
     }),
     { info: true },
   )
   .add(
-    'skin',
+    'pink skin',
     () => ({
       components: { Button },
       template: '<Button label="Button" skin="pink" @click="action" />',
