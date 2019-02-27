@@ -5,7 +5,7 @@
       <div class="result__answer">{{ answer }}</div>
     </div>
     <div class="clear">
-      <Button text="Clear" @click="handleClickClear" />
+      <Button label="Clear" @click="handleClickClear" />
     </div>
     <NumberBoard :numbers="numbers" />
     <OperatorBoard :operators="operators" />
