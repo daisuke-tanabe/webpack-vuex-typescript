@@ -28,11 +28,12 @@
     ]
   },
   "include": [
+    "node_modules/@types/webpack-env/index.d.ts",
     "src/**/*.ts",
-    "src/**/*.vue",
-    "node_modules/@types/webpack-env/index.d.ts"
+    "src/**/*.vue"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/**/stories.ts"
   ]
 }

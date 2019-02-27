@@ -12,8 +12,6 @@ const propsDescription = {
 };
 
 storiesOf('Button', module)
-  // TODO typeライブラリがないため一旦ignore
-  // @ts-ignore
   .addDecorator(withInfo)
   .add(
     'button type',
