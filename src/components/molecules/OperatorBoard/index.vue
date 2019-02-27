@@ -24,6 +24,8 @@ export default class OperatorBoard extends Vue {
   public operators!: string[];
 
   public handleClickOperator(event: Event): void {
+    // 非常に面倒だがこういう書き方をしないといけない
+    // eventから要素を受け取る場合の書き方は他にも種類がある
     if (event.target instanceof HTMLElement) {
       this.$store.dispatch('clickOperator', event.target.innerText);
     }

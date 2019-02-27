@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 const REG_EXP = /[÷×＋−]/;
 
+// TODO 命名間違った、中身の条件式は否定ならtrueになるんだった
 const canUpdateNumber = (state: { previous: string; isSelectedOperator: boolean }, current: string): boolean => {
   const { previous, isSelectedOperator } = state;
   const hasZeroOrDot = current === '0' || current === '00' || current === '.';
@@ -21,6 +22,7 @@ const canUpdateNumber = (state: { previous: string; isSelectedOperator: boolean 
   );
 };
 
+// TODO 命名間違った、中身の条件式は否定ならtrueになるんだった
 const canUpdateOperator = (state: { previous: string }, current: string): boolean => {
   const { previous } = state;
   const hasArithmetic = REG_EXP.test(current);
@@ -33,6 +35,7 @@ const canUpdateOperator = (state: { previous: string }, current: string): boolea
   );
 };
 
+// TODO 命名間違った、中身の条件式は否定ならtrueになるんだった
 const canUpdateAnswer = (
   state: { previous: string; isSelectedOperator: boolean; formula: string[] },
   current: string,
@@ -55,6 +58,8 @@ const canUpdateAnswer = (
 };
 
 export default new Vuex.Store({
+  // TODO Storeの中身はtypescriptのチェックがほとんど行われない
+  // TODO おそらくはvuexとtypescriptの世界線が違うため
   state: {
     previous: '',
     formula: [],

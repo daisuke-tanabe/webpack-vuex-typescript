@@ -7,6 +7,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Button extends Vue {
+  // @Propsの中身はvueの世界線
+  // @Propsの下はdataを表していて、typescriptの世界線
   @Prop({
     type: String,
     default: '',
@@ -26,6 +28,7 @@ export default class Button extends Vue {
   public skin?: string;
 
   // computed
+  // TODO styled-componentsようにしたかったけど、vueはclassとstyleに寄せたほうが可読性良いかも
   get styles(): { [key: string]: string } | void {
     const color = (): string => {
       if (this.skin === 'pink') {
