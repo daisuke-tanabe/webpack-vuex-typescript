@@ -7,7 +7,7 @@
     <div class="clear">
       <Button label="Clear" @click="handleClickClear" />
     </div>
-    <NumberBoard :numbers="numbers" />
+    <NumberBoard />
     <OperatorBoard :operators="operators" />
   </div>
 </template>
@@ -26,7 +26,6 @@ import OperatorBoard from '../molecules/OperatorBoard/index.vue';
   },
 })
 export default class Calculator extends Vue {
-  private numbers: string[] = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '00', '.'];
   private operators: string[] = ['÷', '×', '＋', '−', '＝'];
 
   get formula(): string {

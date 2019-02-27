@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import Button from '../../atoms/Button/index.vue';
 
 @Component({
@@ -16,15 +16,13 @@ import Button from '../../atoms/Button/index.vue';
   },
 })
 export default class NumberBoard extends Vue {
-  @Prop({
-    type: Array,
-    default: [],
-  })
-  public numbers!: string[];
+  private numbers: string[] = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '00', '.'];
 
-  public handleClickNumber(event: Event): void {
-    if (event.target instanceof HTMLElement) {
-      this.$store.dispatch('clickNumber', event.target.innerText);
+  private handleClickNumber(event: Event): void {
+    const eventTarget = event.target;
+
+    if (eventTarget instanceof HTMLElement) {
+      this.$store.dispatch('clickNumber', eventTarget.innerText);
     }
   }
 }
