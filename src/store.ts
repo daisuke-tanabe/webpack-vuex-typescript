@@ -57,6 +57,13 @@ const canUpdateAnswer = (
   );
 };
 
+interface State {
+  previous: string;
+  formula: string[];
+  answer: number;
+  isSelectedOperator: boolean;
+}
+
 /**
  * vuexの世界とtypescriptの世界が交わっている(?)せいか、type-checkされないものがある
  */
@@ -66,7 +73,7 @@ export default new Vuex.Store({
     formula: [],
     answer: 0,
     isSelectedOperator: false,
-  },
+  } as State,
 
   getters: {
     formula(state): string[] {
