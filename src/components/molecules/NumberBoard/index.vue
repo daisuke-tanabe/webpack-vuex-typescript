@@ -7,7 +7,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+/**
+ * Presentational Component
+ *
+ * pagesディレクトリ以外のコンポーネントは以下のような設計にしています
+ *
+ * - 受け取った値を元に描写するだけ
+ * - マークアップやスタイルをゴリゴリ書く
+ */
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import Button from '../../atoms/Button/index.vue';
 
 @Component({
@@ -18,13 +26,10 @@ import Button from '../../atoms/Button/index.vue';
 export default class NumberBoard extends Vue {
   private numbers: string[] = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '00', '.'];
 
-  private handleClickNumber(event: Event): void {
-    const eventTarget = event.target;
-
-    if (eventTarget instanceof HTMLElement) {
-      this.$store.dispatch('clickNumber', eventTarget.innerText);
-    }
-  }
+  @Prop({
+    type: Function,
+  })
+  private handleClickNumber!: () => void;
 }
 </script>
 

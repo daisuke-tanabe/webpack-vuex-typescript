@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <Calculator />
+    <Top />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Calculator from './components/organisms/Calculator.vue';
+import Top from './components/pages/Top/index.vue';
 
 @Component({
   components: {
-    Calculator,
+    Top,
   },
 })
 export default class App extends Vue {}

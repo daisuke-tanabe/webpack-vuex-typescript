@@ -3,6 +3,14 @@
 </template>
 
 <script lang="ts">
+/**
+ * Presentational Component
+ *
+ * pagesディレクトリ以外のコンポーネントは以下のような設計にしています
+ *
+ * - 受け取った値を元に描写するだけ
+ * - マークアップやスタイルをゴリゴリ書く
+ */
 import { Component, Prop, Emit, Vue } from 'vue-property-decorator';
 
 interface Map {

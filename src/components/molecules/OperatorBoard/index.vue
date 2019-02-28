@@ -8,7 +8,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+/**
+ * Presentational Component
+ *
+ * pagesディレクトリ以外のコンポーネントは以下のような設計にしています
+ *
+ * - 受け取った値を元に描写するだけ
+ * - マークアップやスタイルをゴリゴリ書く
+ */
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import Button from '../../atoms/Button/index.vue';
 
 @Component({
@@ -19,21 +27,15 @@ import Button from '../../atoms/Button/index.vue';
 export default class OperatorBoard extends Vue {
   private operators: string[] = ['÷', '×', '＋', '−', '＝'];
 
-  private handleClickOperator(event: Event): void {
-    const eventTarget = event.target;
+  @Prop({
+    type: Function,
+  })
+  private handleClickOperator!: () => void;
 
-    if (eventTarget instanceof HTMLElement) {
-      this.$store.dispatch('clickOperator', eventTarget.innerText);
-    }
-  }
-
-  private handleClickAnswer(event: Event): void {
-    const eventTarget = event.target;
-
-    if (eventTarget instanceof HTMLElement) {
-      this.$store.dispatch('clickAnswer', eventTarget.innerText);
-    }
-  }
+  @Prop({
+    type: Function,
+  })
+  private handleClickAnswer!: () => void;
 }
 </script>
 

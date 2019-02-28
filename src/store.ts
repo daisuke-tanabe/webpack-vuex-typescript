@@ -57,9 +57,10 @@ const canUpdateAnswer = (
   );
 };
 
+/**
+ * vuexの世界とtypescriptの世界が交わっている(?)せいか、type-checkされないものがある
+ */
 export default new Vuex.Store({
-  // TODO Storeの中身はtypescriptのチェックがほとんど行われない
-  // TODO おそらくはvuexとtypescriptの世界線が違うため
   state: {
     previous: '',
     formula: [],
@@ -131,7 +132,13 @@ export default new Vuex.Store({
   },
 
   actions: {
-    clickNumber({ commit, state }, current): void {
+    clickNumber({ commit, state }, event: Event): void {
+      const eventTarget = event.target;
+      if (!(eventTarget instanceof HTMLElement)) {
+        return;
+      }
+
+      const current = eventTarget.innerText;
       if (canUpdateNumber(state, current)) {
         return;
       }
@@ -140,7 +147,13 @@ export default new Vuex.Store({
       commit('updateCurrent', { text: current });
     },
 
-    clickOperator({ commit, state }, current): void {
+    clickOperator({ commit, state }, event: Event): void {
+      const eventTarget = event.target;
+      if (!(eventTarget instanceof HTMLElement)) {
+        return;
+      }
+
+      const current = eventTarget.innerText;
       if (canUpdateOperator(state, current)) {
         return;
       }
@@ -149,7 +162,13 @@ export default new Vuex.Store({
       commit('updateCurrent', { text: current });
     },
 
-    clickAnswer({ commit, state }, current): void {
+    clickAnswer({ commit, state }, event: Event): void {
+      const eventTarget = event.target;
+      if (!(eventTarget instanceof HTMLElement)) {
+        return;
+      }
+
+      const current = eventTarget.innerText;
       if (canUpdateAnswer(state, current)) {
         return;
       }
