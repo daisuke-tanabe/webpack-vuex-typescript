@@ -80,7 +80,6 @@ export default class Calculator extends Vue {
     'result clear'
     'number-board operator-board';
   height: 460px;
-  margin: 20px;
   width: 420px;
 }
 

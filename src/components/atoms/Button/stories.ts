@@ -11,7 +11,7 @@ const propsDescription = {
   },
 };
 
-storiesOf('Button', module)
+storiesOf('Atoms/Button', module)
   .addDecorator(withInfo)
   .add(
     'button type',
