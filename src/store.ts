@@ -5,16 +5,17 @@ Vue.use(Vuex);
 
 const REG_EXP = /[÷×＋−]/;
 
-// TODO 命名間違った、中身の条件式は否定ならtrueになるんだった
 const canUpdateNumber = (state: { previous: string; isSelectedOperator: boolean }, current: string): boolean => {
   const { previous, isSelectedOperator } = state;
   const hasZeroOrDot = current === '0' || current === '00' || current === '.';
 
+  // TODO 否定しなくてもfalseになる条件にしたほうがよい
+  // 以下の条件は入力できない条件なので否定してfalseで返す
   // 直前に入力された文字が空文字で、0かドットを入力した場合、何も起こさない
   // 直前に入力された文字がドットで、ドットを入力した場合、何も起こさない
   // 直前に入力された文字が等号で、ドットか0を入力した場合、何も起こさない
   // 演算子入力状態で、0かドットを入力した場合、何も起こさない
-  return (
+  return !(
     (previous === '' && hasZeroOrDot) ||
     (previous === '.' && current === '.') ||
     (previous === '＝' && hasZeroOrDot) ||
@@ -22,20 +23,22 @@ const canUpdateNumber = (state: { previous: string; isSelectedOperator: boolean 
   );
 };
 
-// TODO 命名間違った、中身の条件式は否定ならtrueになるんだった
 const canUpdateOperator = (state: { previous: string }, current: string): boolean => {
   const { previous } = state;
   const hasArithmetic = REG_EXP.test(current);
 
+  // TODO 否定しなくてもfalseになる条件にしたほうがよい
+  // 以下の条件は入力できない条件なので否定してfalseで返す
   // 直前に入力された文字が空文字で、四則演算が入力されている場合、何も起こさない
   // 直前に入力された文字がドットで、四則演算が入力されている場合、何も起こさない
   // 直前に入力された文字が等号で、四則演算が入力されている場合、何も起こさない
-  return (
-    (previous === '' && hasArithmetic) || (previous === '.' && hasArithmetic) || (previous === '＝' && hasArithmetic)
+  return !(
+    (previous === '' && hasArithmetic) ||
+    (previous === '.' && hasArithmetic) ||
+    (previous === '＝' && hasArithmetic)
   );
 };
 
-// TODO 命名間違った、中身の条件式は否定ならtrueになるんだった
 const canUpdateAnswer = (
   state: { previous: string; isSelectedOperator: boolean; formula: string[] },
   current: string,
@@ -43,12 +46,14 @@ const canUpdateAnswer = (
   const { previous, isSelectedOperator, formula } = state;
   const hasEqual = current === '＝';
 
+  // TODO 否定しなくてもfalseになる条件にしたほうがよい
+  // 以下の条件は入力できない条件なので否定してfalseで返す
   // 直前に入力された文字がドットで、等号を入力した場合、何も起こさない
   // 直前に入力された文字が等号で、等号を入力した場合、何も起こさない
   // 直前の文字が空文字の場合、何も起こさない
   // 演算子入力状態の場合、何も起こさない
   // 四則演算が1つも式にない場合、何も起こさない
-  return (
+  return !(
     previous === '' ||
     (previous === '.' && hasEqual) ||
     (previous === '＝' && hasEqual) ||
@@ -146,7 +151,8 @@ export default new Vuex.Store({
       }
 
       const current = eventTarget.innerText;
-      if (canUpdateNumber(state, current)) {
+      // 入力できないならreturnする
+      if (!canUpdateNumber(state, current)) {
         return;
       }
 
@@ -161,7 +167,8 @@ export default new Vuex.Store({
       }
 
       const current = eventTarget.innerText;
-      if (canUpdateOperator(state, current)) {
+      // 入力できないならreturnする
+      if (!canUpdateOperator(state, current)) {
         return;
       }
 
@@ -176,7 +183,8 @@ export default new Vuex.Store({
       }
 
       const current = eventTarget.innerText;
-      if (canUpdateAnswer(state, current)) {
+      // 入力できないならreturnする
+      if (!canUpdateAnswer(state, current)) {
         return;
       }
 
