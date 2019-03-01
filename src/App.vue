@@ -1,18 +1,17 @@
 <template>
   <div id="app">
-    <Top />
+    <ul>
+      <li><router-link to="/">Home</router-link></li>
+      <li><router-link to="/calculator">calculator</router-link></li>
+    </ul>
+    <router-view></router-view>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Top from './components/pages/Top/index.vue';
 
-@Component({
-  components: {
-    Top,
-  },
-})
+@Component
 export default class App extends Vue {}
 </script>
 
