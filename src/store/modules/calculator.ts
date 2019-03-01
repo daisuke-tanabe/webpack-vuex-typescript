@@ -1,7 +1,9 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-
-Vue.use(Vuex);
+interface State {
+  previous: string;
+  formula: string[];
+  answer: number;
+  isSelectedOperator: boolean;
+}
 
 const REG_EXP = /[÷×＋−]/;
 
@@ -62,17 +64,7 @@ const canUpdateAnswer = (
   );
 };
 
-interface State {
-  previous: string;
-  formula: string[];
-  answer: number;
-  isSelectedOperator: boolean;
-}
-
-/**
- * vuexの世界とtypescriptの世界が交わっている(?)せいか、type-checkされないものがある
- */
-export default new Vuex.Store({
+const calculator = {
   state: {
     previous: '',
     formula: [],
@@ -81,16 +73,16 @@ export default new Vuex.Store({
   } as State,
 
   getters: {
-    formula(state): string[] {
+    formula(state: State): string[] {
       return state.formula;
     },
-    answer(state): number {
+    answer(state: State): number {
       return state.answer;
     },
   },
 
   mutations: {
-    updateNumber(state, payload): void {
+    updateNumber(state: State, payload: { text: string }): void {
       // 直前の文字が等号の場合はformulaを空にする
       // 計算が終わってから次の数値入力時に数式と答えをリセットする仕様
       if (state.previous === '＝') {
@@ -98,16 +90,16 @@ export default new Vuex.Store({
         state.answer = 0;
       }
 
-      const { text }: { text: string } = payload;
-      const formula: string[] = state.formula;
+      const { text } = payload;
+      const formula = state.formula;
 
       formula.push(text);
       state.isSelectedOperator = false;
     },
 
-    updateOperator(state, payload): void {
-      const { text }: { text: string } = payload;
-      const formula: string[] = state.formula;
+    updateOperator(state: State, payload: { text: string }): void {
+      const { text } = payload;
+      const formula = state.formula;
 
       // 演算子入力状態で再度演算子が入力されたら配列末尾を削除する
       if (state.isSelectedOperator) {
@@ -118,7 +110,7 @@ export default new Vuex.Store({
       state.isSelectedOperator = true;
     },
 
-    updateAnswer(state): void {
+    updateAnswer(state: State): void {
       const answer = state.formula
         .join('')
         .replace(/_/g, '')
@@ -130,71 +122,73 @@ export default new Vuex.Store({
       state.answer = new Function(`return ${answer}`)();
     },
 
-    clearSelectedNumbers(state): void {
+    clearSelectedNumbers(state: State): void {
       state.previous = '';
       state.formula = [];
       state.answer = 0;
       state.isSelectedOperator = false;
     },
 
-    updateCurrent(state, payload): void {
-      const { text }: { text: string } = payload;
+    updateCurrent(state: State, payload: { text: string }): void {
+      const { text } = payload;
       state.previous = text;
     },
   },
 
   actions: {
-    clickNumber({ commit, state }, event: Event): void {
+    clickNumber({ commit, state }: { commit: any; state: State }, event: Event): void {
       const eventTarget = event.target;
       if (!(eventTarget instanceof HTMLElement)) {
         return;
       }
 
-      const current = eventTarget.innerText;
+      const text = eventTarget.innerText;
       // 入力できないならreturnする
-      if (!canUpdateNumber(state, current)) {
+      if (!canUpdateNumber(state, text)) {
         return;
       }
 
-      commit('updateNumber', { text: current });
-      commit('updateCurrent', { text: current });
+      commit('updateNumber', { text });
+      commit('updateCurrent', { text });
     },
 
-    clickOperator({ commit, state }, event: Event): void {
+    clickOperator({ commit, state }: { commit: any; state: State }, event: Event): void {
       const eventTarget = event.target;
       if (!(eventTarget instanceof HTMLElement)) {
         return;
       }
 
-      const current = eventTarget.innerText;
+      const text = eventTarget.innerText;
       // 入力できないならreturnする
-      if (!canUpdateOperator(state, current)) {
+      if (!canUpdateOperator(state, text)) {
         return;
       }
 
-      commit('updateOperator', { text: current });
-      commit('updateCurrent', { text: current });
+      commit('updateOperator', { text });
+      commit('updateCurrent', { text });
     },
 
-    clickAnswer({ commit, state }, event: Event): void {
+    clickAnswer({ commit, state }: { commit: any; state: State }, event: Event): void {
       const eventTarget = event.target;
       if (!(eventTarget instanceof HTMLElement)) {
         return;
       }
 
-      const current = eventTarget.innerText;
+      const text = eventTarget.innerText;
       // 入力できないならreturnする
-      if (!canUpdateAnswer(state, current)) {
+      if (!canUpdateAnswer(state, text)) {
         return;
       }
 
       commit('updateAnswer');
-      commit('updateOperator', { text: current });
-      commit('updateCurrent', { text: current });
+      commit('updateOperator', { text });
+      commit('updateCurrent', { text });
     },
 
-    clickClear({ commit }): void {
+    clickClear({ commit }: { commit: any }): void {
       commit('clearSelectedNumbers');
     },
   },
-});
+};
+
+export default calculator;
