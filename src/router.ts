@@ -3,8 +3,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 // import: pages component
-import Top from './components/pages/Top/index.vue';
-import Calculator from './components/pages/Calculator/index.vue';
+const Top = () => import(/* webpackChunkName: 'top' */ './components/pages/Top/index.vue');
+const Calculator = () => import(/* webpackChunkName: 'calculator' */ './components/pages/Calculator/index.vue');
 
 Vue.use(Router);
 
@@ -13,10 +13,12 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'top',
       component: Top,
     },
     {
       path: '/calculator',
+      name: 'calculator',
       component: Calculator,
     },
   ],
