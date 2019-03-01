@@ -21,8 +21,14 @@
  * - 受け取った値を元に描写するだけ
  * - マークアップやスタイルをゴリゴリ書く
  */
+
+// import: node_modules
 import { Component, Prop, Vue } from 'vue-property-decorator';
+
+// import: atoms component
 import Button from '../../atoms/Button/index.vue';
+
+// import: molecules component
 import NumberBoard from '../../molecules/NumberBoard/index.vue';
 import OperatorBoard from '../../molecules/OperatorBoard/index.vue';
 

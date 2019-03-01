@@ -21,9 +21,13 @@
  * - stateやactionの流し込みだけ担当する（vuexを知っている）
  * - マークアップやスタイルは原則書かない（書いてもラップ用のみ）
  */
+
+// import: node_modules
 import { Component, Vue } from 'vue-property-decorator';
-import Calculator from '../../organisms/Calculator/index.vue';
 import { mapActions } from 'vuex';
+
+// import: organisms component
+import Calculator from '../../organisms/Calculator/index.vue';
 
 @Component({
   components: {
@@ -44,4 +48,7 @@ export default class Top extends Vue {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.page {
+}
+</style>

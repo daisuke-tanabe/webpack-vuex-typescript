@@ -15,7 +15,11 @@
  * - 受け取った値を元に描写するだけ
  * - マークアップやスタイルをゴリゴリ書く
  */
+
+// import: node_modules
 import { Component, Prop, Vue } from 'vue-property-decorator';
+
+// import: atoms component
 import Button from '../../atoms/Button/index.vue';
 
 @Component({

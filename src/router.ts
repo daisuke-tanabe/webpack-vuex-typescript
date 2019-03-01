@@ -1,12 +1,8 @@
-/*
- * import: node_modules
- * -------------------------------------------------- */
+// import: node_modules
 import Vue from 'vue';
 import Router from 'vue-router';
 
-/*
- * import: page components
- * -------------------------------------------------- */
+// import: pages component
 import Top from './components/pages/Top/index.vue';
 import Calculator from './components/pages/Calculator/index.vue';
 
