@@ -3,6 +3,7 @@ interface State {
   formula: string[];
   answer: number;
   isSelectedOperator: boolean;
+  [key: string]: string | string[] | number | boolean;
 }
 
 const REG_EXP = /[÷×＋−]/;
@@ -64,13 +65,15 @@ const canUpdateAnswer = (
   );
 };
 
+const initialState = (): State => ({
+  previous: '',
+  formula: [],
+  answer: 0,
+  isSelectedOperator: false,
+});
+
 const calculator = {
-  state: {
-    previous: '',
-    formula: [],
-    answer: 0,
-    isSelectedOperator: false,
-  } as State,
+  state: initialState(),
 
   getters: {
     formula(state: State): string[] {
@@ -122,16 +125,16 @@ const calculator = {
       state.answer = new Function(`return ${answer}`)();
     },
 
-    clearSelectedNumbers(state: State): void {
-      state.previous = '';
-      state.formula = [];
-      state.answer = 0;
-      state.isSelectedOperator = false;
-    },
-
-    updateCurrent(state: State, payload: { text: string }): void {
+    updatePrevious(state: State, payload: { text: string }): void {
       const { text } = payload;
       state.previous = text;
+    },
+
+    resetState(state: State): void {
+      const s = initialState();
+      Object.keys(s).forEach((key) => {
+        state[key] = s[key];
+      });
     },
   },
 
@@ -149,7 +152,7 @@ const calculator = {
       }
 
       commit('updateNumber', { text });
-      commit('updateCurrent', { text });
+      commit('updatePrevious', { text });
     },
 
     clickOperator({ commit, state }: { commit: any; state: State }, event: Event): void {
@@ -165,7 +168,7 @@ const calculator = {
       }
 
       commit('updateOperator', { text });
-      commit('updateCurrent', { text });
+      commit('updatePrevious', { text });
     },
 
     clickAnswer({ commit, state }: { commit: any; state: State }, event: Event): void {
@@ -182,11 +185,11 @@ const calculator = {
 
       commit('updateAnswer');
       commit('updateOperator', { text });
-      commit('updateCurrent', { text });
+      commit('updatePrevious', { text });
     },
 
     clickClear({ commit }: { commit: any }): void {
-      commit('clearSelectedNumbers');
+      commit('resetState');
     },
   },
 };
