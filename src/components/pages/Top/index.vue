@@ -1,18 +1,10 @@
 <template>
   <div class="page">
-    <div class="section">
-      <h1 class="title title--lv1">このパッケージについて</h1>
-      <p class="paragraph">このパッケージは、vue-vuex-typescript-storybookの設計サンプルです。</p>
-    </div>
-
-    <div class="section">
-      <h2 class="title title--lv2">Home</h2>
-      <p class="paragraph">トップページ</p>
-    </div>
-
-    <div class="section">
-      <h2 class="title title--lv2">Calculator</h2>
-      <p class="paragraph">計算機</p>
+    <div class="posts">
+      <div v-for="post in posts">
+        <h2>{{ post.title }}</h2>
+        <div>{{ post.description }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -21,8 +13,16 @@
 // import: node_modules
 import { Component, Vue } from 'vue-property-decorator';
 
-@Component
-export default class Top extends Vue {}
+@Component({
+  created() {
+    this.$store.dispatch('fetchPosts');
+  },
+})
+export default class Top extends Vue {
+  get posts(): any {
+    return this.$store.getters.posts;
+  }
+}
 </script>
 
 <style scoped lang="scss">
