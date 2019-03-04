@@ -1,9 +1,8 @@
 <template>
   <div class="page">
     <div class="posts">
-      <div v-for="post in posts">
-        <h2>{{ post.title }}</h2>
-        <div>{{ post.description }}</div>
+      <div class="post" v-for="post in posts">
+        <VueMarkdown class="post__markdown">{{ post.markdown }}</VueMarkdown>
       </div>
     </div>
   </div>
@@ -12,15 +11,22 @@
 <script lang="ts">
 // import: node_modules
 import { Component, Vue } from 'vue-property-decorator';
+import VueMarkdown from 'vue-markdown';
 
 @Component({
-  created() {
-    this.$store.dispatch('fetchPosts');
+  components: {
+    VueMarkdown,
   },
 })
 export default class Top extends Vue {
+  // computed
   get posts(): any {
     return this.$store.getters.posts;
+  }
+
+  // Lifecycle hooks
+  public created() {
+    this.$store.dispatch('fetchPosts');
   }
 }
 </script>
@@ -29,40 +35,42 @@ export default class Top extends Vue {
 .page {
 }
 
-.section {
+.post {
   margin-bottom: 30px;
 }
 
-.title {
-  color: #333;
-  font-weight: bold;
-  line-height: 1.4;
-  margin-bottom: 0.8em;
-
-  &::before {
-    color: #c3c3c3;
-    margin: 0 8px 0 0;
-  }
-
-  &--lv1 {
+.post__markdown {
+  /deep/ h1 {
+    color: #333;
     font-size: 20px;
+    font-weight: bold;
+    line-height: 1.4;
+    margin-bottom: 0.8em;
 
     &::before {
       content: '#';
+      color: #c3c3c3;
+      margin: 0 8px 0 0;
     }
   }
 
-  &--lv2 {
+  /deep/ h2 {
+    color: #333;
     font-size: 18px;
+    font-weight: bold;
+    line-height: 1.4;
+    margin: 1.2em 0 0.8em;
 
     &::before {
       content: '##';
+      color: #c3c3c3;
+      margin: 0 8px 0 0;
     }
   }
-}
 
-.paragraph {
-  font-size: 13px;
-  line-height: 1.8;
+  /deep/ p {
+    font-size: 13px;
+    line-height: 1.8;
+  }
 }
 </style>

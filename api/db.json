@@ -2,8 +2,7 @@
   "posts": [
     {
       "id": 1,
-      "title": "このパッケージについて",
-      "description": "このパッケージについての説明をマークダウンで記入する（予定）"
+      "markdown": "# このパッケージについて\nこのパッケージは、vue-vuex-typescript-storybookの設計サンプルです。\n## Home\n非同期 + markdownテキスト読み込み\n## Calculator\n計算機"
     }
   ]
 }
