@@ -1,12 +1,8 @@
 <template>
   <div class="page">
-    <div class="posts">
-      <div class="post" v-for="post in posts">
-        <router-link class="post__link" :to="`/posts/${post.id}`">
-          <div class="post__title">{{ post.title }}</div>
-          <div class="post__description">{{ post.description }}</div>
-        </router-link>
-      </div>
+    <div class="post">
+      <div>{{ post.title }}</div>
+      <div>{{ post.description }}</div>
     </div>
   </div>
 </template>
@@ -16,15 +12,15 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component
-export default class Posts extends Vue {
+export default class Post extends Vue {
   // computed
-  get posts(): any {
-    return this.$store.getters.posts;
+  get post(): any {
+    return this.$store.getters.post;
   }
 
   // Lifecycle hooks
   public created() {
-    this.$store.dispatch('fetchPosts');
+    this.$store.dispatch('fetchPost', { id: this.$route.params.id });
   }
 }
 </script>
