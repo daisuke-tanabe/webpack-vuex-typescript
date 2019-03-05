@@ -1,9 +1,18 @@
 <template>
   <div class="page">
-    <div class="posts">
-      <div class="post" v-for="post in posts">
-        <VueMarkdown class="post__markdown">{{ post.markdown }}</VueMarkdown>
-      </div>
+    <div class="section">
+      <h1 class="title title--lv1">このパッケージについて</h1>
+      <p class="paragraph">このパッケージは、vue-vuex-typescript-storybookの設計サンプルです。</p>
+    </div>
+
+    <div class="section">
+      <h2 class="title title--lv2">Home</h2>
+      <p class="paragraph">トップページ</p>
+    </div>
+
+    <div class="section">
+      <h2 class="title title--lv2">Calculator</h2>
+      <p class="paragraph">計算機</p>
     </div>
   </div>
 </template>
@@ -11,66 +20,49 @@
 <script lang="ts">
 // import: node_modules
 import { Component, Vue } from 'vue-property-decorator';
-import VueMarkdown from 'vue-markdown';
 
-@Component({
-  components: {
-    VueMarkdown,
-  },
-})
-export default class Top extends Vue {
-  // computed
-  get posts(): any {
-    return this.$store.getters.posts;
-  }
-
-  // Lifecycle hooks
-  public created() {
-    this.$store.dispatch('fetchPosts');
-  }
-}
+@Component
+export default class Top extends Vue {}
 </script>
 
 <style scoped lang="scss">
 .page {
 }
 
-.post {
+.section {
   margin-bottom: 30px;
 }
 
-.post__markdown {
-  /deep/ h1 {
-    color: #333;
+.title {
+  color: #333;
+  font-weight: bold;
+  line-height: 1.4;
+  margin-bottom: 0.8em;
+
+  &::before {
+    color: #c3c3c3;
+    margin: 0 8px 0 0;
+  }
+
+  &--lv1 {
     font-size: 20px;
-    font-weight: bold;
-    line-height: 1.4;
-    margin-bottom: 0.8em;
 
     &::before {
       content: '#';
-      color: #c3c3c3;
-      margin: 0 8px 0 0;
     }
   }
 
-  /deep/ h2 {
-    color: #333;
+  &--lv2 {
     font-size: 18px;
-    font-weight: bold;
-    line-height: 1.4;
-    margin: 1.2em 0 0.8em;
 
     &::before {
       content: '##';
-      color: #c3c3c3;
-      margin: 0 8px 0 0;
     }
   }
+}
 
-  /deep/ p {
-    font-size: 13px;
-    line-height: 1.8;
-  }
+.paragraph {
+  font-size: 13px;
+  line-height: 1.8;
 }
 </style>

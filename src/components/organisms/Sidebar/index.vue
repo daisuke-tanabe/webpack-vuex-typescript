@@ -20,6 +20,10 @@ export default class Sidebar extends Vue {
       path: '/',
     },
     {
+      label: 'Posts',
+      path: '/posts',
+    },
+    {
       label: 'Calculator',
       path: '/calculator',
     },
