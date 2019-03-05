@@ -45,6 +45,11 @@ export default class Top extends Vue {
   get answer(): number {
     return this.$store.getters.answer;
   }
+
+  // Lifecycle hooks
+  private created() {
+    this.$store.dispatch('clickClear');
+  }
 }
 </script>
 
